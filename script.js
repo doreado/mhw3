@@ -157,7 +157,8 @@ function getResult() {
     });
 
     getGif(resultKey);
-    getPlaylist('50L3W8NaVU3d4bKlCPi6I9');
+    console.log(resultKey);
+    getPlaylist(resultMap['playlist']);
 }
 
 function resetSelection(ans) {
