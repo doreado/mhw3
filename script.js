@@ -13,16 +13,16 @@ function getResultMap() {
     return RESULTS_MAP[resultKey];
 }
 
-function onRandomIdResponse() {
-    return 
-}
+async function getGif(titleKey) {
+    let randomId = await fetch("https://api.giphy.com/v1/randomid"
+        + "?api_key=" + giphyKey).then(onResponse)
+        .then(onRandomIdResponse => {
+          return onRandomIdResponse['data']['random_id'];
+      });
 
-function getGif(titleKey) {
-    // fetch("https://api.giphy.com/v1/randomid", {api_key: giphyKey});
-    //   .then(onResponse).then(onRandomIdResponse);
-    console.log(titleKey);
     let api_end_point = "https://api.giphy.com/v1/gifs/random";
-    fetch(api_end_point + "?api_key=" + giphyKey + "&tag=" + titleKey + "&rating=g")
+    fetch(api_end_point + "?api_key=" + giphyKey + "&tag=" + titleKey 
+        + "&rating=g" + "&random_id=" + randomId)
         .then(onResponse).then(onGiphyResponse);
 }
 
