@@ -13,20 +13,21 @@ function getResultMap() {
     return RESULTS_MAP[resultKey];
 }
 
-async function getGif(titleKey) {
+async function getGif(personalityKey) {
     let randomId = await fetch("https://api.giphy.com/v1/randomid"
         + "?api_key=" + giphyKey).then(onResponse)
         .then(onRandomIdResponse => {
           return onRandomIdResponse['data']['random_id'];
       });
 
-    let api_end_point = "https://api.giphy.com/v1/gifs/random";
-    fetch(api_end_point + "?api_key=" + giphyKey + "&tag=" + titleKey 
-        + "&rating=g" + "&random_id=" + randomId)
-        .then(onResponse).then(onGiphyResponse);
+    if (randomId) {
+        let api_end_point = "https://api.giphy.com/v1/gifs/random";
+        fetch(api_end_point + "?api_key=" + giphyKey + "&tag=" + personalityKey 
+            + "&rating=g" + "&random_id=" + randomId)
+            .then(onResponse).then(onGiphyResponse);
+    }
 }
 
-let resultGif;
 function onGiphyResponse(json) {
     const result = document.querySelector('#result');
     const gifBox = document.createElement('div');
@@ -56,7 +57,6 @@ function onTokenJson(json) {
         return;
     }
 
-    console.log(json);
     accessToken = json.access_token;
 }
 
@@ -74,9 +74,6 @@ function getSpotifyToken() {
     ).then(onResponse).then(onTokenJson);
 }
 
-function createPlaylistLayout(json) {
-
-}
 function onPlaylistJson(json) {
     const result = document.querySelector('#result');
 
@@ -114,8 +111,6 @@ function onPlaylistJson(json) {
     playlistLink.href = json['external_urls']['spotify'];
     playlistLink.textContent = 'Ascolta su Spotify'
     linkBox.appendChild(playlistLink);
-
-    console.log(json);
 }
 
 function getPlaylist(id) {
@@ -157,7 +152,6 @@ function getResult() {
     });
 
     getGif(resultKey);
-    console.log(resultKey);
     getPlaylist(resultMap['playlist']);
 }
 
